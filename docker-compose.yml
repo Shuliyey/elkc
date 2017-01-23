@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:5
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config:/usr/share/elasticsearch/config
+    tty: true
+    networks:
+      - default
+  kibana:
+    container_name: kibana
+    image: kibana:5
+    volumes:
+      - ./kibana/config/kibana.yml:/etc/kibana/kibana.yml
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    tty: true
+    networks:
+      - default
+  logstash:
+    container_name: logstash
+    image: logstash:5
+    command: logstash -f /config-dir/
+    volumes:
+      - ./logstash/config:/config-dir
+      - ./logstash/data/:/data
+    depends_on:
+      - elasticsearch
+    tty: true
+    networks:
+      - default
+  cerebro:
+    container_name: cerebro
+    image: yannart/cerebro:0.5.0
+    volumes:
+      - ./cerebro/config/conf:/opt/cerebro-0.5.0/conf
+      - ./cerebro/logs:/opt/cerebro-0.5.0/logs
+    depends_on:
+      - elasticsearch
+    ports:
+      - 9000:9000
+    tty: true
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
