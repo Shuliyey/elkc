@@ -23,7 +23,7 @@ docker-compose up -d
 
 ## 2.5 Stop the elkc cluster
 ```
-docker-compose up -d
+docker-compose stop
 ```
 
 # 3 IMPORTANT NOTE
