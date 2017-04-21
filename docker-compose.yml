@@ -3,7 +3,7 @@ version: '2'
 services:
   elasticsearch:
     container_name: elasticsearch
-    image: elasticsearch:5
+    image: elasticsearch:alpine
     volumes:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
       - ./elasticsearch/config:/usr/share/elasticsearch/config
@@ -12,7 +12,7 @@ services:
       - default
   kibana:
     container_name: kibana
-    image: kibana:5
+    image: kibana
     volumes:
       - ./kibana/config/kibana.yml:/etc/kibana/kibana.yml
     depends_on:
@@ -24,7 +24,7 @@ services:
       - default
   logstash:
     container_name: logstash
-    image: logstash:5
+    image: logstash:alpine
     command: logstash -f /config-dir/
     volumes:
       - ./logstash/config:/config-dir
